@@ -5,21 +5,23 @@ from selenium.webdriver import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.firefox.options import Options as Firefox_Options
 from selenium.webdriver import Remote
 #Could not get firefox to work:
+#from selenium.webdriver.firefox.options import Options as Firefox_Options
 #from selenium import webdriver
 #from selenium.webdriver.common.keys import Keys
 #from selenium.webdriver.support.ui import Select
 #from selenium.webdriver.support.ui import WebDriverWait
 #from selenium.webdriver.common.proxy import Proxy, ProxyType
 #from selenium.webdriver.firefox.options import Options
+################################################
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 import time
 import struct
 import socket
+import subprocess
 ########## Default Gateway Function ############
 def get_default_gateway_linux():
 	"""Read the default gateway directly from /proc."""
@@ -34,6 +36,7 @@ debug = 0 #set to 0 for no logs (aka when you're ready to deploy), 1 for logging
 #If you need something to test on, use one of these portals: https://www.ironwifi.com/captive-portal-demos/
 addr = str(get_default_gateway_linux())
 #addr = "https://splash.ironwifi.com/api/pages/r-p4vpk-xkxrq-gt6vx/?mac=05:22:33:44:55:66&url=https://www.ironwifi.com"
+#driverpath = "/root/chromedriver" #required that you set your gecodriver path (see selenium setup)
 driverpath = "/usr/bin/chromedriver" #required that you set your gecodriver path (see selenium setup)
 ############### Main Function ##################
 def payloadz(target, debg, path):
@@ -51,22 +54,21 @@ def payloadz(target, debg, path):
 #	options.headless = True
 #	driver = webdriver.Firefox(capabilities=dcapabilities,options=options,executable_path=r'geckodriver')
 	chrome_options = Options()
-	chrome_options.add_argument('--mute-audio')
-	chrome_options.add_argument('--dns-prefetch-disable')
-	chrome_options.add_argument('--lang=en-US')
-	chrome_options.add_argument('--disable-setuid-sandbox')
-	chrome_options.add_argument('--headless')
 	chrome_options.add_argument('--no-sandbox')
-	chrome_options.add_argument('--blink-settings=imagesEnabled=false')
 	chrome_options.add_argument('--disable-dev-shm-usage')
+	chrome_options.add_argument('--headless')
+	chrome_options.add_argument("--start-maximized")
+	chrome_options.add_argument("--disable-infobars")
+	chrome_options.add_argument("--remote-debugging-port=9222")
+	chrome_options.add_argument('--dns-prefetch-disable')
+	chrome_options.add_argument('--disable-setuid-sandbox')
+	chrome_options.add_argument('--blink-settings=imagesEnabled=false')
 	chrome_options.add_argument('--disable-web-security')
 	chrome_options.add_argument('--ignore-certificate-errors')
 	chrome_options.add_argument('--disable-extensions')
 	chrome_options.add_argument('--disable-gpu')
-	chrome_options.add_argument("disable-infobars")
 	driver = webdriver.Chrome(path,chrome_options=chrome_options)
 	driver.get(target)
-	time.sleep(1)
 	if debg == 1:
 		print("***Foud Captive Portal HTML elements:***")
 	try:
