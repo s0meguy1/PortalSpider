@@ -30,7 +30,7 @@ def get_default_gateway_linux():
 				continue
 			return str(socket.inet_ntoa(struct.pack("<L", int(fields[2], 16))))
 ################### Settings ###################
-debug = 1 #set to 0 for no logs (aka when you're ready to deploy), 1 for logging
+debug = 0 #set to 0 for no logs (aka when you're ready to deploy), 1 for logging
 #If you need something to test on, use one of these portals: https://www.ironwifi.com/captive-portal-demos/
 addr = str(get_default_gateway_linux())
 #addr = "https://splash.ironwifi.com/api/pages/r-p4vpk-xkxrq-gt6vx/?mac=05:22:33:44:55:66&url=https://www.ironwifi.com"
