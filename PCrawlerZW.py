@@ -62,6 +62,8 @@ def payloadz(target, debg, path):
 	chrome_options.add_argument('--disable-web-security')
 	chrome_options.add_argument('--ignore-certificate-errors')
 	chrome_options.add_argument('--disable-extensions')
+	chrome_options.add_argument('--disable-gpu')
+	chrome_options.add_argument("disable-infobars")
 	driver = webdriver.Chrome(path,chrome_options=chrome_options)
 	driver.get(target)
 	time.sleep(1)
